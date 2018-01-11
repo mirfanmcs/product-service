@@ -1,0 +1,54 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  application:
+    name: product-service
+  profiles:
+    active: cloud
+  jpa:
+    hibernate:
+      ddl-auto: update
+  rabbitmq:
+    addresses:  ${vcap.services.ostore-rabbitmq.credentials.uri}
+
+  # This setting is for the pivotal service registry service.
+    # There are two registration methods:
+    #   route: to enable service to service communication through router
+    #   direct: to enable service to service communication directly through the container to container
+    #           direct add the container IP address and port (eg. http://10.242.52.28:8080) in the service registry instead of public route
+    #           If you use direct then you have to enable the network policy for services to communicate
+    #           If you enable direct, public route is not required. You can skip public route or leave if you want service to be called externally.
+    #           See this link -> http://docs.pivotal.io/spring-cloud-services/1-5/common/service-registry/writing-client-applications.html#consume-using-c2c
+  cloud:
+    services:
+      registrationMethod: direct
+
+  # Product service need to call product price service. For the container to container networking enable the network policy to
+  # allow product service to talk to product price service.
+  # Install the Networking cf CLI plugin if don't have installed.
+  # Run following command to install the plugin: cf install-plugin -r CF-Community "network-policy"
+  # To see list of access run following: cf list-access
+  # To setup access of API gateway to product service run following:
+  #   cf allow-access irfanstore-apigateway product-service --protocol tcp --port 8080
+  # To setup access of product service to product price service run the following:
+  #   cf allow-access product-service product-price-service --protocol tcp --port 8080
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+#Disable HTTP basic authentication for service discovery
+security:
+  basic:
+    enabled: false
+
+management:
+  security:
+    enabled: false
+
+feign:
+  hystrix:
+    enabled: true

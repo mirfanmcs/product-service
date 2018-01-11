@@ -1,0 +1,32 @@
+---
+applications:
+- name: product-service
+  memory: 1G
+  instances: 1
+  #random-route: true
+  # We are going to use container to container communication and don't need service to be called publicly.
+  # We will call product service through API Gateway
+  no-route: true
+  timeout: 180
+  path: ./target/product-1.0-SNAPSHOT.jar
+  services:
+    - ostore-db
+    - ostore-service-registry
+    - ostore-circuit-breaker-dashboard
+    - ostore-rabbitmq
+    - ostore-autoscaler
+
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+
+
+#Bind to the following services:
+# mysql (name: ostore-db)
+# p-service-registry (name: ostore-service-registry)
+# p-circuit-breaker-dashboard (name: ostore-circuit-breaker-dashboard)
+# app-autoscaler (name: ostore-autoscaler)
+# Rabbitmq (for zipkin) (name: ostore-rabbitmq)
+
+
+
+

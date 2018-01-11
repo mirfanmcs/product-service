@@ -5,7 +5,7 @@ This is the sample REST Spring boot microservice application written for the Piv
 This application uses following features / services in the Pivotal Cloud Foundry:
 
 ### Spring Cloud Connectors 
-This application uses Spring Cloud Connectors to discover service binded services and connectivity to the MySql or RabbitMQ when services are binded in Cloud Foundry. 
+This application uses Spring Cloud Connectors to discover binded services and connectivity to the MySql or RabbitMQ when services are binded in Cloud Foundry. 
 
 ### Database 
 This application uses the in-memory h2 database if MySql service is not binded and uses the MySql if service is binded in Cloud Foundry.

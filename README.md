@@ -46,7 +46,12 @@ Service doesn’t have the public route defined as service is intended to be cal
 
 ### Network Policy for the Container to Container Networking 
 To setup network access of product service call to product price service run the following command:
-`cf allow-access product-service product-price-service --protocol tcp --port 8080`
+`cf allow-access product-service product-price-service --protocol tcp --port 8080` or 
+`cf add-network-policy product-service --destination-app product-price-service --protocol tcp --port 8080`
+
+To remove the policy run the following command:
+`cf remove-network-policy product-service --destination-app product-price-service --protocol tcp --port 8080`
+
 To run this command, you need to have the Cf CLI Network Plugin installed. 
 
 ### Push the application
